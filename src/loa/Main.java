@@ -19,6 +19,7 @@ import static loa.Utils.*;
 
 /** Main class of the Lines of Action program.
  * @author P. N. Hilfinger and
+ * 
  */
 public class Main {
 
@@ -67,8 +68,8 @@ public class Main {
         } else if (options.contains("--display")) {
             try {
                 System.in.close();
-                System.err.println("Display option not implemented.");
-                System.exit(2);
+                //System.err.println("Display option not implemented.");
+                //System.exit(2);
             } catch (IOException dummy) {
                 /* Ignore IOException. */
             }

@@ -157,6 +157,11 @@ final class Square {
     int index() {
         return (_row << 3) + _col;
     }
+    public static Square squareByIndex(int index) {
+		int col = index % BOARD_SIZE;
+		int row = index / BOARD_SIZE;
+		return sq(col, row);
+	}
 
     @Override
     public int hashCode() {

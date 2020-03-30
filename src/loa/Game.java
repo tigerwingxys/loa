@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import static loa.Piece.*;
 import static loa.Move.mv;
 import static loa.Square.*;
-import static loa.Main.*;
 import static loa.Utils.*;
 
 /** Represents one game of Lines of Action.
@@ -22,6 +21,8 @@ class Game {
     static final int MILLISEC = 1000;
     /** Name of help text resource. */
     static final String HELP_FILE = "loa/HelpText.txt";
+    /** Default depth */
+    static final int DEFAULT_DEPTH = 0;
 
     /** Controller for one or more games of LOA, using
      *  MANUALPLAYERTEMPLATE as an exemplar for manual players
@@ -46,6 +47,7 @@ class Game {
         _black = _manualPlayerTemplate.create(BP, this);
         _reporter = reporter;
         _strict = strict;
+        _depth = DEFAULT_DEPTH;
     }
 
     /** Return the current board. */
@@ -120,6 +122,9 @@ class Game {
             case "seed":
                 seedCommand(command.group(2));
                 break;
+            case "depth":
+            	setDepthCommand(command.group(2));
+            	break;
             case "set":
                 setCommand(command.group(2), command.group(3).toLowerCase(),
                            command.group(4).toLowerCase());
@@ -198,6 +203,22 @@ class Game {
             error("Invalid number: %s%n", seed);
         }
     }
+    
+    private void setDepthCommand(String depth) {
+		try {
+			setDepth(Integer.parseInt(depth));
+		} catch (NumberFormatException e) {
+			error("Invalid number: %s%n", depth);
+		}
+	}
+    
+	void setDepth(int depth) {
+		_depth = depth;
+	}
+	int getDepth() {
+		return _depth;
+	}
+
 
     /** Set square S to CONTENT ('black', 'white', or '-'), and next player
         to move to NEXTPLAYER: 'black' or 'white'. */
@@ -336,4 +357,6 @@ class Game {
     /** If true, command errors cause termination with error exit
      *  code. */
     private boolean _strict;
+	/** The search depths */
+	private int _depth;
 }

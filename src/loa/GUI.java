@@ -39,7 +39,16 @@ class GUI extends TopLevel implements View, Reporter {
     GUI(String title) {
         super(title, true);
         addMenuButton("Game->New", this::newGame);
-        addMenuButton("Game->Quit", this::quit);
+        addMenuButton("Game->New", this::newGame);
+        addSeparator("Game");
+        addMenuButton("Set->Auto", this::newGame);
+        addMenuButton("Set->Manual", this::newGame);
+        addMenuButton("Set->Seed", this::newGame);
+        addMenuButton("Game->Undo", this::newGame);
+        addMenuButton("Game->Redo", this::newGame);
+        addSeparator("Game");
+         addMenuButton("Game->Quit", this::quit);
+         addMenuButton("Help->About", this::quit);
         // FIXME: Other controls?
 
         _widget = new BoardWidget(_pendingCommands);

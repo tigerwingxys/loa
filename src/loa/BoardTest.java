@@ -49,6 +49,17 @@ public class BoardTest {
         { EMP,  WP,  WP,  WP, EMP, EMP, EMP, EMP },
         { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
     };
+    
+    static final Piece[][] BOARD4 = {
+    		{ BP,BP,BP,BP,BP,BP,BP,EMP},
+    		{WP,BP,BP,EMP,BP,WP,EMP,EMP},
+    		{EMP,EMP,EMP,EMP,EMP,EMP,EMP,EMP},
+    		{EMP,EMP,EMP,EMP,EMP,EMP,WP,EMP},
+    		{EMP,EMP,WP,WP,EMP,EMP,EMP,WP},
+    		{EMP,EMP,WP,EMP,EMP,EMP,EMP,WP},
+    		{EMP,EMP,WP,EMP,EMP,WP,EMP,WP},
+    		{EMP,EMP,EMP,EMP,EMP,EMP,EMP,EMP}
+    };
 
 
     static final String BOARD1_STRING =
@@ -67,7 +78,8 @@ public class BoardTest {
     /** Test display */
     @Test
     public void toStringTest() {
-        assertEquals(BOARD1_STRING, new Board(BOARD1, BP).toString());
+    	String ss = new Board(BOARD1, BP).toString();
+        assertEquals(BOARD1_STRING, ss);
     }
 
     /** Test legal moves. */
@@ -98,8 +110,12 @@ public class BoardTest {
         assertTrue("Board 2 game over", b2.gameOver());
         Board b3 = new Board(BOARD3, BP);
         assertTrue("Board 3 white contiguous?", b3.piecesContiguous(WP));
-        assertTrue("Board 3 black contiguous?", b3.piecesContiguous(WP));
-        assertTrue("Board 3 game over", b2.gameOver());
+        assertTrue("Board 3 black contiguous?", b3.piecesContiguous(BP));
+        assertTrue("Board 3 game over", b3.gameOver());
+        Board b4 = new Board(BOARD4,BP);
+        assertFalse("Board 4 white contiguous?", b4.piecesContiguous(WP));
+        assertTrue("Board 4 black contiguous?", b4.piecesContiguous(BP));
+        assertTrue("Board 4 game over", b4.gameOver());
     }
 
     @Test

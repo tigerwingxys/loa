@@ -4,6 +4,7 @@ package loa;
 
 import ucb.gui2.Pad;
 
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import java.awt.BasicStroke;
@@ -11,7 +12,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
-import static loa.Piece.*;
 import static loa.Square.sq;
 
 /** A widget that displays a Loa game.
@@ -48,12 +48,14 @@ class BoardWidget extends Pad {
     /** Distance of edge of piece to edge of square it's on. */
     static final int PIECE_OFFSET =
         (int) Math.round(0.5 * (SQUARE_SIDE - PIECE_SIZE));
+    static final int DOT_SIZE = 6;
 
     /** Strokes to provide boundary around board and outline of piece. */
     static final BasicStroke
         BORDER_STROKE = new BasicStroke(BORDER_WIDTH, BasicStroke.CAP_ROUND,
                                         BasicStroke.JOIN_ROUND),
-        PIECE_BOUNDARY_STROKE = new BasicStroke(1.0f);
+        PIECE_BOUNDARY_STROKE = new BasicStroke(1.0f),
+        LEGAL_MOVE_STROKE = new BasicStroke(2.0f);
 
     /** A graphical representation of a Loa board that sends commands
      *  derived from mouse clicks to COMMANDS.  */
@@ -94,6 +96,12 @@ class BoardWidget extends Pad {
             drawPiece(g, sq);
         }
         // More? FIXME
+        for (Move move : legalMoves) {
+			drawArrow(g, move);
+		}
+        if (_from != null) {
+			g.drawOval(cx(_from)+(SQUARE_SIDE-DOT_SIZE)/2, cy(_from)+(SQUARE_SIDE-DOT_SIZE)/2, DOT_SIZE, DOT_SIZE);
+		}
     }
 
     /** Draw the contents of S on G. */
@@ -118,16 +126,31 @@ class BoardWidget extends Pad {
         g.drawOval(cx(s) + PIECE_OFFSET, cy(s) + PIECE_OFFSET,
                    PIECE_SIZE, PIECE_SIZE);
     }
+    
+    private void drawArrow(Graphics2D g,Move move) {
+		g.setStroke(LEGAL_MOVE_STROKE);
+		g.drawLine(cx(move.getFrom())+SQUARE_SIDE/2, cy(move.getFrom())+SQUARE_SIDE/2, cx(move.getTo())+SQUARE_SIDE/2, cy(move.getTo())+SQUARE_SIDE/2);
+	}
 
     /** Handle a mouse-button push on S. */
     private void mousePressed(Square s) {
         // FIXME
+    	if(_board.get(s) == _board.turn()) {
+    		_from = s;
+    		legalMoves.addAll(_board.legalMoves(s));
+		}
+    	
         repaint();
     }
 
     /** Handle a mouse-button release on S. */
     private void mouseReleased(Square s) {
         // FIXME
+    	legalMoves.clear();
+    	if (_from != null && _board.isLegal(_from, s)) {
+    		_commands.add(Move.mv(_from,s).toString());
+		}
+    	_from = null;
         repaint();
     }
 
@@ -199,5 +222,9 @@ class BoardWidget extends Pad {
 
     /** True iff accepting moves from user. */
     private boolean _acceptingMoves;
+    
+    private Square _from = null;
+    
+    private final ArrayList<Move> legalMoves = new ArrayList<>();
 
 }
