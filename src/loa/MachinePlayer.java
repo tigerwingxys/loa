@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-
 /**
  * An automated Player.
  * 
@@ -106,20 +104,17 @@ class MachinePlayer extends Player {
 			if (move.getFrom().distance(centreSquare) <= 2) {
 				continue;
 			}
-			int fromValue = board.distancePower(centreSquare,
-					move.getFrom());
-			int toValue = board.distancePower(centreSquare,
-					move.getTo());
+			int fromValue = board.distancePower(centreSquare, move.getFrom());
+			int toValue = board.distancePower(centreSquare, move.getTo());
 			if (fromValue == 0 || toValue >= fromValue) {
 				continue;
 			}
-			int afterDistance = toValue * BOARD_SIZE * BOARD_SIZE
-					/ fromValue;
+			int afterDistance = toValue * BOARD_SIZE * BOARD_SIZE / fromValue;
 			if (afterDistance >= bestDistance) {
 				continue;
 			}
 			bestDistance = afterDistance;
-			
+
 			board.makeMove(move);
 			response = findMove(board, depth - 1, false, -sense, alpha, beta);
 			Utils.debug(1,
@@ -224,8 +219,7 @@ class MachinePlayer extends Player {
 				}
 			}
 			if (bestMove == null) {
-				bestMove = nextMoves
-						.get(getGame().randInt(nextMoves.size()));
+				bestMove = nextMoves.get(getGame().randInt(nextMoves.size()));
 			}
 		}
 		board.makeMove(bestMove);

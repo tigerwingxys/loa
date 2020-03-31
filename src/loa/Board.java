@@ -244,7 +244,7 @@ class Board {
 	/** Return a sequence of all legal moves from this turn. */
 	List<Move> legalMoves() {
 		ArrayList<Move> arrayList = new ArrayList<>();
-		for(Integer integer:getPieces(turn())) {
+		for (Integer integer : getPieces(turn())) {
 			Square square = squareByIndex(integer.intValue());
 			arrayList.addAll(legalMoves(square));
 		}
@@ -524,7 +524,6 @@ class Board {
 		r = r / arrayList.size();
 		return sq(c, r);
 	}
-
 
 	/**
 	 * The standard initial configuration for Lines of Action (bottom row

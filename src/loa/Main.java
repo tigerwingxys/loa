@@ -18,7 +18,7 @@ import static loa.Piece.*;
 import static loa.Utils.*;
 
 /** Main class of the Lines of Action program.
- * @author P. N. Hilfinger and
+ * @author P. N. Hilfinger and ChengXU
  * 
  */
 public class Main {

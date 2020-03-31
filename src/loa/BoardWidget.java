@@ -103,6 +103,7 @@ class BoardWidget extends Pad {
 			g.drawOval(cx(_from)+(SQUARE_SIDE-DOT_SIZE)/2, cy(_from)+(SQUARE_SIDE-DOT_SIZE)/2, DOT_SIZE, DOT_SIZE);
 		}
     }
+    
 
     /** Draw the contents of S on G. */
     private void drawPiece(Graphics2D g, Square s) {
