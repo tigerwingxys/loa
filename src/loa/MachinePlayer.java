@@ -209,17 +209,15 @@ class MachinePlayer extends Player {
 
 		}
 		if (bestMove == null) {
-			ArrayList<Square> bigCluster = dList.get(0);
-			Square s = bigCluster.get(getGame().randInt(bigCluster.size()));
-			List<Move> nextMoves = board.legalMoves(s);
-			for (Move move : nextMoves) {
-				if (board.distancePower(centreSquare, move.getFrom()) > board
-						.distancePower(centreSquare, move.getTo())) {
-					bestMove = move;
+			OUTER2: for (int i = dList.size() - 1; i >= 0; i--) {
+				ArrayList<Square> aList = dList.get(i);
+				for (Square square : aList) {
+					List<Move> nextMoves = board.legalMoves(square);
+					if (nextMoves.size()>0) {
+						bestMove = nextMoves.get(getGame().randInt(nextMoves.size()));
+						break OUTER2;
+					}
 				}
-			}
-			if (bestMove == null) {
-				bestMove = nextMoves.get(getGame().randInt(nextMoves.size()));
 			}
 		}
 		board.makeMove(bestMove);

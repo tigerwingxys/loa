@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import static loa.Piece.*;
 import static loa.Square.*;
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * Represents the state of a game of Lines of Action.
@@ -149,6 +150,7 @@ class Board {
 	 * Assuming isLegal(MOVE), make MOVE. Assumes MOVE.isCapture() is false.
 	 */
 	void makeMove(Move move) {
+		assert move != null;
 		assert isLegal(move);
 		// FIXME
 		set(move.getFrom(), EMP);

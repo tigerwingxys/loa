@@ -271,7 +271,7 @@ class Game {
 		_playing = true;
 
 		while (true) {
-			try {
+			//try {
 				String next;
 				_view.update(this);
 				if (_board.gameOver() && _playing) {
@@ -297,9 +297,9 @@ class Game {
 				} else {
 					processCommand(next);
 				}
-			} catch (IllegalArgumentException excp) {
-				System.err.printf("Error: %s%n", excp.getMessage());
-			}
+			//} //catch (IllegalArgumentException excp) {
+				//System.err.printf("Error: %s%n", excp.getMessage());
+			//}
 		}
 	}
 
@@ -309,13 +309,13 @@ class Game {
 	private void announceWinner() {
 		switch (_board.winner()) {
 		case BP:
-			_reporter.reportNote("Black wins.");
+			_reporter.reportNote("Black wins after %d moves.", _board.movesMade());
 			break;
 		case WP:
-			_reporter.reportNote("White wins.");
+			_reporter.reportNote("White wins after %d moves.", _board.movesMade());
 			break;
 		default:
-			_reporter.reportNote("Tie game.");
+			_reporter.reportNote("Tie game after %d moves.", _board.movesMade());
 			break;
 		}
 	}
