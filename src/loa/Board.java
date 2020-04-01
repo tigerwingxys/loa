@@ -465,7 +465,7 @@ class Board {
 		return moveSteps(m.getFrom(), m.getTo());
 	}
 
-	/** 更应该偏向棋子多的一方 */
+	/** Return the center of piece */
 	Square centreSquare(Piece piece) {
 		int c = 0, r = 0;
 		HashSet<Integer> aSet = getPieces(piece);
