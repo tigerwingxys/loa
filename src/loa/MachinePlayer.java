@@ -153,7 +153,7 @@ class MachinePlayer extends Player {
 			_foundMove = moves.get(moves.size() / 2);
 		}
 
-		return bestValue; // FIXME
+		return bestValue;
 	}
 
 	/** Return a search depth for the current position. */
@@ -161,7 +161,6 @@ class MachinePlayer extends Player {
 		return getGame().getDepth();
 	}
 
-	// FIXME: Other methods, variables here.
 	private HashMap<String, Object> guessBestMove(Board board) {
 		HashMap<String, Object> rHashMap = new HashMap<>();
 		int bestvalue = Integer.MAX_VALUE;
@@ -213,8 +212,9 @@ class MachinePlayer extends Player {
 				ArrayList<Square> aList = dList.get(i);
 				for (Square square : aList) {
 					List<Move> nextMoves = board.legalMoves(square);
-					if (nextMoves.size()>0) {
-						bestMove = nextMoves.get(getGame().randInt(nextMoves.size()));
+					if (nextMoves.size() > 0) {
+						bestMove = nextMoves
+								.get(getGame().randInt(nextMoves.size()));
 						break OUTER2;
 					}
 				}

@@ -5,6 +5,7 @@ Commands: Commands are whitespace-delimited.  Other trailing text on a line
             designations (a-h) and v and y are row designations (1-8): 
   new       Stop game and return to initial position.
   seed N    Seed the random number with integer N.
+  limit N   Set the move limit with integer N.
   auto P    P is white or black; makes P into an AI.
   manual P  P is white or black; takes moves for P from terminal.
   set cr P N

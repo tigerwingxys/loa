@@ -18,7 +18,7 @@ import static org.junit.Assert.assertArrayEquals;
 /**
  * Represents the state of a game of Lines of Action.
  * 
- * @author
+ * @author ChengXu
  */
 class Board {
 
@@ -56,7 +56,6 @@ class Board {
 
 	/** Set my state to CONTENTS with SIDE to move. */
 	void initialize(Piece[][] contents, Piece side) {
-		// FIXME
 		_turn = side;
 		_moveLimit = DEFAULT_MOVE_LIMIT;
 		_winnerKnown = false;
@@ -93,7 +92,6 @@ class Board {
 		if (board == this) {
 			return;
 		}
-		// FIXME
 		_turn = board._turn;
 		_moveLimit = board._moveLimit;
 		_winner = board._winner;
@@ -126,11 +124,10 @@ class Board {
 	 * if NEXT is not null.
 	 */
 	void set(Square sq, Piece v, Piece next) {
-		// FIXME
 		_board[sq.index()] = v;
 		if (next != null) {
 			_turn = next;
-		}
+		} 
 	}
 
 	/**
@@ -152,7 +149,6 @@ class Board {
 	void makeMove(Move move) {
 		assert move != null;
 		assert isLegal(move);
-		// FIXME
 		set(move.getFrom(), EMP);
 		getPieces(_turn).remove(move.getFrom().index());
 		boolean capture = get(move.getTo()) == _turn.opposite();
@@ -173,7 +169,6 @@ class Board {
 	 */
 	void retract() {
 		assert movesMade() > 0;
-		// FIXME
 		Move lastMove = lastMove();
 		_turn = _turn.opposite();
 		if (lastMove.isCapture()) {
@@ -189,6 +184,7 @@ class Board {
 		_subsetsInitialized = false;
 	}
 
+	/** Return the last move */
 	Move lastMove() {
 		return _moves.get(_moves.size() - 1);
 	}
@@ -215,7 +211,7 @@ class Board {
 		if (from.distance(to) != moveSteps(from, to)) {
 			return false;
 		}
-		return true; // FIXME
+		return true;
 	}
 
 	/**
@@ -240,7 +236,7 @@ class Board {
 				aList.add(Move.mv(square, to2, get(to2) == _turn.opposite()));
 			}
 		}
-		return aList; // FIXME
+		return aList;
 	}
 
 	/** Return a sequence of all legal moves from this turn. */
@@ -255,7 +251,7 @@ class Board {
 
 	/**
 	 * Return true iff the game is over (either player has all his pieces
-	 * continguous or there is a tie).
+	 * continuous or there is a tie).
 	 */
 	boolean gameOver() {
 		return winner() != null;
@@ -281,7 +277,7 @@ class Board {
 		} else if (piecesContiguous(_turn)) {
 			_winner = _turn;
 			_winnerKnown = true;
-		} else if (movesMade() >= DEFAULT_MOVE_LIMIT) {
+		} else if (_turn == BP && movesMade() >= _moveLimit * 2) {
 			_winner = EMP;
 			_winnerKnown = true;
 		}
@@ -364,7 +360,7 @@ class Board {
 				result += numContig(s, visited, p, aList);
 			}
 		}
-		return result; // FIXME
+		return result; 
 	}
 
 	/** Set the values of _whiteRegionSizes and _blackRegionSizes. */
@@ -376,7 +372,6 @@ class Board {
 		_blackRegionSizes.clear();
 		_blackClusters.clear();
 		_whiteClusters.clear();
-		// FIXME
 		boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
 		for (Integer I : _blackPieces) {
 			int idx = I.intValue();
@@ -441,7 +436,6 @@ class Board {
 		return null;
 	}
 
-	// FIXME: Other methods, variables?
 	/** Return the steps, from SQ in DIR direction */
 	int moveSteps(Square sq, int dir) {
 		int result = get(sq) == EMP ? 0 : 1;
@@ -499,16 +493,19 @@ class Board {
 		return distance + 1;
 	}
 
+	/** Return the variance of the distance power of BP and WP */
 	int valueBPMinusWP() {
 		return value(BP) - value(WP);
 	}
 
+	/** Return the distance power according to CENTRE and SQUARE */
 	int distancePower(Square centre, Square square) {
 		int colDiff = centre.col() - square.col();
 		int rowDiff = centre.row() - square.row();
 		return colDiff * colDiff + rowDiff * rowDiff;
 	}
 
+	/** Return the list of clusters of PIECE, every continuous pieces is a sub list */
 	ArrayList<ArrayList<Square>> getClusters(Piece piece) {
 		computeRegions();
 		ArrayList<ArrayList<Square>> dList = new ArrayList<>();
@@ -516,6 +513,7 @@ class Board {
 		return dList;
 	}
 
+	/** Return the center square of the ARRAYLIST of squares */
 	Square clusterCentre(ArrayList<Square> arrayList) {
 		int c = 0, r = 0;
 		for (Square square : arrayList) {

@@ -16,7 +16,7 @@ import static loa.Utils.*;
 /**
  * Represents one game of Lines of Action.
  * 
- * @author
+ * @author ChengXu
  */
 class Game {
 
@@ -130,6 +130,9 @@ class Game {
 			case "depth":
 				setDepthCommand(command.group(2));
 				break;
+			case "limit":
+				setLimitCommand(command.group(2));
+				break;
 			case "set":
 				setCommand(command.group(2), command.group(3).toLowerCase(),
 						command.group(4).toLowerCase());
@@ -210,6 +213,14 @@ class Game {
 		}
 	}
 
+	private void setLimitCommand(String limit) {
+		try {
+			getBoard().setMoveLimit(Integer.parseInt(limit));
+		} catch (NumberFormatException e) {
+			error("Invalid number: %s%n", limit);
+		}
+	}
+
 	private void setDepthCommand(String depth) {
 		try {
 			setDepth(Integer.parseInt(depth));
@@ -271,7 +282,7 @@ class Game {
 		_playing = true;
 
 		while (true) {
-			//try {
+			try {
 				String next;
 				_view.update(this);
 				if (_board.gameOver() && _playing) {
@@ -297,9 +308,17 @@ class Game {
 				} else {
 					processCommand(next);
 				}
-			//} //catch (IllegalArgumentException excp) {
-				//System.err.printf("Error: %s%n", excp.getMessage());
-			//}
+			} catch (IllegalArgumentException excp) {
+				System.err.printf("Error: %s%n", excp.getMessage());
+				if (_strict) {
+					System.exit(-1);
+				}
+			} catch (Exception e) {
+				System.err.printf("Error: %s%n", e.getMessage());
+				if (_strict) {
+					System.exit(-1);
+				}
+			}
 		}
 	}
 
@@ -309,13 +328,13 @@ class Game {
 	private void announceWinner() {
 		switch (_board.winner()) {
 		case BP:
-			_reporter.reportNote("Black wins after %d moves.", _board.movesMade());
+			_reporter.reportNote("Black wins.");
 			break;
 		case WP:
-			_reporter.reportNote("White wins after %d moves.", _board.movesMade());
+			_reporter.reportNote("White wins");
 			break;
 		default:
-			_reporter.reportNote("Tie game after %d moves.", _board.movesMade());
+			_reporter.reportNote("Tie game.");
 			break;
 		}
 	}

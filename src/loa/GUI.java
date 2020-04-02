@@ -47,6 +47,8 @@ class GUI extends TopLevel implements View, Reporter {
 		addMenuButton("Set->Auto", this::autoPlayer);
 		addMenuButton("Set->Manual", this::manualPlayer);
 		addMenuButton("Set->Seed", this::setSeed);
+		addMenuButton("Set->Limit", this::setLimit);
+		addMenuButton("Set->Depth", this::setDepth);
 		addMenuButton("Game->Quit", this::quit);
 		addMenuButton("Help->About", (s) -> displayText("About", ABOUT_TEXT));
 		addMenuButton("Help->Loa", (s) -> displayText("Loa Help", HELP_TEXT));
@@ -65,6 +67,10 @@ class GUI extends TopLevel implements View, Reporter {
 
 	private static final Pattern PLAYER_PATN = Pattern
 			.compile("\\s*([a-zA-Z]{5})\\s*$");
+	private static final Pattern LIMIT_PATN = Pattern
+			.compile("\\s*(\\d{1,3})\\s*$");
+	private static final Pattern DEPTH_PATN = Pattern
+			.compile("\\s*(\\d{1})\\s*$");
 
 	private void autoPlayer(String dummy) {
 		String response = getTextInput("Enter a color.", "New color", "plain",
@@ -110,6 +116,32 @@ class GUI extends TopLevel implements View, Reporter {
 			}
 		}
 
+	}
+
+	private void setLimit(String dummy) {
+		String response = getTextInput("Enter the move limit.", "New limit",
+				"plain", "60");
+		if (response != null) {
+			Matcher mat = LIMIT_PATN.matcher(response);
+			if (mat.matches()) {
+				_pendingCommands.offer(String.format("limit %s", mat.group(1)));
+			} else {
+				showMessage("Enter an integral limit value.", "Error", "error");
+			}
+		}
+	}
+
+	private void setDepth(String dummy) {
+		String response = getTextInput("Enter the depth.", "New depth", "plain",
+				"0");
+		if (response != null) {
+			Matcher mat = DEPTH_PATN.matcher(response);
+			if (mat.matches()) {
+				_pendingCommands.offer(String.format("depth %s", mat.group(1)));
+			} else {
+				showMessage("Enter an integral depth value.", "Error", "error");
+			}
+		}
 	}
 
 	/** Response to "Quit" button click. */
